@@ -1,9 +1,24 @@
 # OS-Programing-Assignment-6
 
+## Authors
+Kylee Down and Haley Kothari
+
+## Compile
+gcc vmmgr.c -o vmmgr
+
+## Run 
+./vmmgr addresses.txt
+
+
+## Resources
 https://man7.org/linux/man-pages/man3/fopen.3p.html
+
 https://man7.org/linux/man-pages/man3/errno.3.html 
+
 https://man7.org/linux/man-pages/man3/strtol.3.html
+
 https://www.geeksforgeeks.org/c/read-a-file-line-by-line-in-c/
+
 https://man7.org/linux/man-pages/man3/fseek.3.html 
 
 Todo List:
