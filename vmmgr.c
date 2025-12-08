@@ -220,8 +220,11 @@ int main(int argc, char *argv[]){
     // Output final statistics:
     // - Page Fault Rate
     // - TLB Hit Rate
-    printf("------------------------------------\nPage Fault Rate = %.3f\n", (float)pageFaults / totalAddresses);
-    printf("TLB Hit Rate = %.3f\n", (float)tlbHits / totalAddresses);
+    float tlbHitRate = ((float)tlbHits / totalAddresses) * 100;
+    float pageFaultRate = ((float)pageFaults / totalAddresses) * 100;
+
+    printf("------------------------------------\nPage Fault Rate = %.2f%%\n", pageFaultRate);
+    printf("TLB Hit Rate = %.2f%%\n", tlbHitRate);
 
     // Close all opened files and exit.
     fclose(backing);
