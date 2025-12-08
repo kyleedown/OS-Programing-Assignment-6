@@ -3,18 +3,21 @@
 #include <errno.h>
 
 typedef struct {
-    uint8_t page;
-    uint8_t offset;
+    int8_t page;
+    int8_t offset;
 } PhysicalAddress;
 
-PhysicalAddress convertAddress(uint32_t logicalAddress){
+PhysicalAddress convertAddress(int32_t logicalAddress){
     PhysicalAddress address;
-    uint16_t masked = logicalAddress & 0xFFFF;
+    int16_t masked = logicalAddress & 0xFFFF;
     address.page = (masked >> 8) & 0xFF;
     address.offset = masked & 0xFF;
+    
     return address;
 
 }
+
+char *physicalMemory[65536];
 
 int main(int argc, char *argv[]){
 
@@ -39,10 +42,11 @@ int main(int argc, char *argv[]){
     int physicalAddressPage,physicalAddressOffset;
 
     while(fgets(line,sizeof(line),fp)){
-        uint32_t logical = atoi(line);
-        printf("%d: ", logical);
+        int32_t logical = atoi(line);
+        printf("%d: \n", logical);
         PhysicalAddress pa = convertAddress(logical);
-        printf("%d, %d\n", pa.page,pa.offset);
+        printf("Page No: %d \n",pa.page);
+        printf("Offset: %d \n",pa.offset);
 
     }
 
