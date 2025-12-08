@@ -149,7 +149,7 @@ int main(int argc, char *argv[]){
         return -1;
     }
 
-    printf("File '%s' opened successfully.\n", argv[1]);
+    // printf("File '%s' opened successfully.\n", argv[1]);
 
     // Mark all page table entries as invalid (-1).
     // This indicates that no pages are currently loaded in memory.
