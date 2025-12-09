@@ -9,6 +9,10 @@ gcc vmmgr.c -o vmmgr
 ## Run 
 ./vmmgr addresses.txt
 
+## Proof of Success
+
+<img width="640" height="174" alt="Screenshot 2025-12-08 at 1 46 20 PM" src="https://github.com/user-attachments/assets/59bac2b0-d15d-4a51-8b60-7246d42fff33" />
+
 
 ## Resources
 https://man7.org/linux/man-pages/man3/fopen.3p.html
