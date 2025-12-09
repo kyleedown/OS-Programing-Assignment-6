@@ -17,7 +17,7 @@
 #define PAGE_COUNT 256
 #define FRAME_SIZE 256
 #define TLB_SIZE 16
-#define PHYSICAL_FRAMES 256
+#define PHYSICAL_FRAMES 128
 
 typedef struct {
     uint8_t page;
@@ -35,6 +35,7 @@ int pageTable[PAGE_COUNT];
 signed char physicalMemory[PHYSICAL_FRAMES][FRAME_SIZE];
 int frameToPage[PHYSICAL_FRAMES];
 int nextFreeFrame = 0;
+int fifoIndex = 0;
 int pageFaults = 0;
 int tlbHits = 0;
 int totalAddresses = 0;
@@ -101,12 +102,31 @@ int loadPage(int page, FILE *backing) {
     
 
     pageFaults++;
-    int frame = nextFreeFrame;
-    nextFreeFrame++;
+    int frame;
+
+    
+    if(nextFreeFrame < PHYSICAL_FRAMES){
+        frame = nextFreeFrame;
+        nextFreeFrame++;
+    }
+    else{
+        frame = fifoIndex;
+        int oldPage = frameToPage[frame];
+        pageTable[oldPage] = -1;
+
+        for(int i = 0; i < TLB_SIZE; i++){
+            if(tlb[i].page == oldPage){
+                tlb[i].page = -1;
+                tlb[i].frame = -1;
+                tlb[i].lastUsed = 0;
+            }
+        }
+
+        fifoIndex = (fifoIndex + 1) % PHYSICAL_FRAMES;
+    }
 
 
     fseek(backing, page * FRAME_SIZE, SEEK_SET);
-    // fread(physicalMemory[frame], 1, FRAME_SIZE, backing);
 
     size_t bytes = fread(physicalMemory[frame], 1, FRAME_SIZE, backing);
     if (bytes < FRAME_SIZE) {
@@ -157,6 +177,10 @@ int main(int argc, char *argv[]){
         pageTable[i] = -1;
     }
 
+    for(int i = 0; i < PHYSICAL_FRAMES; i++){
+        frameToPage[i]=-1;
+    }
+
     nextFreeFrame = 0;
     pageFaults = 0;
     totalAddresses = 0;
@@ -196,6 +220,7 @@ int main(int argc, char *argv[]){
         int frame = tlbLookup(va.page);
 
         if(frame == -1){
+
             frame = pageTable[va.page];
         
             if(frame == -1){
