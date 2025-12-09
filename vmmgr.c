@@ -32,7 +32,7 @@ typedef struct {
 
 TLBEntry tlb[TLB_SIZE];
 int pageTable[PAGE_COUNT];
-signed char physicalMemory[PHYSICAL_FRAMES][FRAME_SIZE];
+signed char physicalMemory[PHYSICAL_FRAMES][FRAME_SIZE] = {{0}};
 int frameToPage[PHYSICAL_FRAMES];
 int nextFreeFrame = 0;
 int fifoIndex = 0;
